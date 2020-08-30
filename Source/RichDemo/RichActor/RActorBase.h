@@ -22,9 +22,15 @@ public:
 #if WITH_EDITOR
     virtual bool ShouldTickIfViewportsOnly() const override;
 #endif
+	UFUNCTION(BlueprintCallable)
+	virtual void OnActive();
+	UFUNCTION(BlueprintCallable)
+	virtual void OnDisActive();
 
-	void OnActive();
-	void OnDisActive();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Rich Actor")
+	void BP_OnActive();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Rich Actor")
+	void BP_OnDisActive();
 
 	ERActorType GetActorType() { return ActorType; };
 

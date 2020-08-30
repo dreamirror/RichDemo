@@ -44,12 +44,12 @@ void ARActorBase::Tick(float DeltaSeconds)
 
 void ARActorBase::OnActive()
 {
-
+	BP_OnActive();
 }
 
 void ARActorBase::OnDisActive()
 {
-
+	BP_OnDisActive();
 }
 
 #if WITH_EDITOR
