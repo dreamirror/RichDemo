@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "RUIManager.h"
-#include "RMaskManager.h"
 #include "RGameInstance.generated.h"
 
+class URUIManager;
+class URMaskManager;
 
 UCLASS()
 class URGameInstance : public UGameInstance

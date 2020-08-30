@@ -3,7 +3,10 @@
 
 #include "RGameInstance.h"
 #include "Runtime/MoviePlayer/Public/MoviePlayer.h"
+
+#include "RUIManager.h"
 #include "RMaskManager.h"
+#include "RichActorManager/RichActorManager.h"
 
 
 URGameInstance* URGameInstance::Instance = nullptr;
@@ -30,6 +33,8 @@ void URGameInstance::Init()
 	MaskManager = NewObject<URMaskManager>(this, URMaskManager::StaticClass());
 	URMaskManager::Get()->InitMask(GetWorld());
 
+	FRichActorManager::CreateSingleton();
+
 }
 
 
@@ -39,6 +44,8 @@ void URGameInstance::Shutdown()
 	
 	MOUIManager->Shutdown();
 	MaskManager->Shutdown();
+
+	FRichActorManager::DestroySingleton();
 
 	Instance = nullptr;
 }
