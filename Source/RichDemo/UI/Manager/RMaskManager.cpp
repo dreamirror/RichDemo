@@ -2,6 +2,7 @@
 #include "RMaskManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "RGameInstance.h"
+#include "Blueprint/UserWidget.h"
 
 
 void URMaskManager::Shutdown()
