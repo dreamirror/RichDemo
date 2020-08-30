@@ -62,6 +62,7 @@ void URGameInstance::BeginLoadingScreen(const FString& MapName)
 		WidgetClass = LoadClass<UUserWidget>(NULL, TEXT("/Game/UMG/WB_Start.WB_Start_C"));
 		LoadingScreen.bWaitForManualStop = true;
 		LoadingScreen.bMoviesAreSkippable = true;
+		LoadingScreen.bAutoCompleteWhenLoadingCompletes = false;
 	}
 	else
 	{
@@ -71,11 +72,9 @@ void URGameInstance::BeginLoadingScreen(const FString& MapName)
 
 	TSharedPtr<SWidget> WidgetPtr = CreateWidget<UUserWidget>(this, WidgetClass)->TakeWidget();
 
-	LoadingScreen.bAutoCompleteWhenLoadingCompletes = true;
 	LoadingScreen.MoviePaths.Add(TEXT("LoadingScreen"));
 	LoadingScreen.WidgetLoadingScreen = WidgetPtr;
 	GetMoviePlayer()->SetupLoadingScreen(LoadingScreen);
-
 }
 
 void URGameInstance::EndLoadingScreen(UWorld* LoadedWorld)
