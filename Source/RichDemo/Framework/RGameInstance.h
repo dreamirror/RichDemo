@@ -27,6 +27,9 @@ private:
 	class URMaskManager* MaskManager = nullptr;
 
 	static URGameInstance* Instance;
+
+	UPROPERTY()
+	bool bFirstLoading = true;
 public:
 	static URGameInstance* Get() { return Instance; }
 	virtual void Init() override;

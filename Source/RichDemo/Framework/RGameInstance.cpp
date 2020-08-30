@@ -7,6 +7,7 @@
 #include "RUIManager.h"
 #include "RMaskManager.h"
 #include "RichActorManager/RichActorManager.h"
+#include "Blueprint/UserWidget.h"
 
 
 URGameInstance* URGameInstance::Instance = nullptr;
@@ -53,29 +54,28 @@ void URGameInstance::Shutdown()
 
 void URGameInstance::BeginLoadingScreen(const FString& MapName)
 {
-	//UE_LOG(LogTemp, Log, TEXT("URGameInstance::BeginLoadingScreen------------->"));
-	//if (!IsRunningDedicatedServer())
-	//{
+	UE_LOG(LogTemp, Log, TEXT("URGameInstance::BeginLoadingScreen------------->"));
+	FLoadingScreenAttributes LoadingScreen;
+	TSubclassOf<UUserWidget> WidgetClass;
+	if (bFirstLoading)
+	{
+		WidgetClass = LoadClass<UUserWidget>(NULL, TEXT("/Game/UMG/WB_Start.WB_Start_C"));
+		LoadingScreen.bWaitForManualStop = true;
+		LoadingScreen.bMoviesAreSkippable = true;
+	}
+	else
+	{
+		WidgetClass = LoadClass<UUserWidget>(NULL, TEXT("/Game/UMG/WB_Loading.WB_Loading_C"));
+		LoadingScreen.bAutoCompleteWhenLoadingCompletes = true;
+	}
 
-	//	FLoadingScreenAttributes LoadingScreen;
-	//	//LoadingScreen.bAutoCompleteWhenLoadingCompletes = false;
-	//	//LoadingScreen.bMoviesAreSkippable = true;
-	//	//LoadingScreen.bWaitForManualStop = true;
-	//	//LoadingScreen.PlaybackType = EMoviePlaybackType::MT_Looped;
-	//	//引擎默认Widget
-	//	//LoadingScreen.WidgetLoadingScreen = FLoadingScreenAttributes::NewTestLoadingScreenWidget();
+	TSharedPtr<SWidget> WidgetPtr = CreateWidget<UUserWidget>(this, WidgetClass)->TakeWidget();
 
-	//	//自定义Widget
-	//	LoadingWidget = GetUIManager()->LoadUserWidget<UWG_Loading>();
-	//	if (LoadingWidget) {
-	//		TSharedPtr<SWidget> WidgetPtr = LoadingWidget->TakeWidget();
-	//		LoadingScreen.WidgetLoadingScreen = WidgetPtr;
-	//	}
+	LoadingScreen.bAutoCompleteWhenLoadingCompletes = true;
+	LoadingScreen.MoviePaths.Add(TEXT("LoadingScreen"));
+	LoadingScreen.WidgetLoadingScreen = WidgetPtr;
+	GetMoviePlayer()->SetupLoadingScreen(LoadingScreen);
 
-	//	//播放视频，视频文件需要放在Content\Movies下
-	//	//LoadingScreen.MoviePaths.Add("squad_intro_movie");
-	//	GetMoviePlayer()->SetupLoadingScreen(LoadingScreen);
-	//}
 }
 
 void URGameInstance::EndLoadingScreen(UWorld* LoadedWorld)
