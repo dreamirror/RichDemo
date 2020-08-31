@@ -89,6 +89,14 @@ void ACameraPawnBase::UpdatePawnRotation(float DeltaTime)
 {
 	if (auto PlayerController = UGameplayStatics::GetPlayerController(this, 0))
 	{
-		this->SetActorRotation(PlayerController->GetControlRotation());
+		FRotator PCRotator = PlayerController->GetControlRotation();
+
+		FRotator LimitRotator = FRotator(
+			FMath::Clamp(PCRotator.Pitch, CameraFovSetting.ViewPitchMin, CameraFovSetting.ViewPitchMax),
+			FMath::Clamp(PCRotator.Yaw, CameraFovSetting.ViewYawMin, CameraFovSetting.ViewYawMax),
+			PCRotator.Roll
+		);
+
+		this->SetActorRotation(LimitRotator);
 	}
 }

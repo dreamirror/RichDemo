@@ -6,6 +6,27 @@
 #include "GameFramework/Pawn.h"
 #include "CameraPawnBase.generated.h"
 
+
+USTRUCT(BlueprintType)
+struct FViewLimit
+{
+	GENERATED_BODY()
+
+public:
+	//meta=(UIMin=1, ClampMin=1, ClampMax=1024)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "垂直最大角度"))
+	float ViewPitchMax = 89.9f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "垂直最小角度"))
+	float ViewPitchMin = -89.9f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "水平最大角度"))
+	float ViewYawMax = 89.9f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "水平最小角度"))
+	float ViewYawMin = -89.9f;
+};
+
 /**
  * 相机基础类型，继承于pawn,可以使用AI驱动，且不直接使用CameraActor方便之后的漫游模式绑定到Character身上
  */
@@ -44,6 +65,9 @@ public:
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "相机参数", meta = (DisplayName = "相机FOV"))
+	FViewLimit CameraFovSetting;
 
 protected:
 

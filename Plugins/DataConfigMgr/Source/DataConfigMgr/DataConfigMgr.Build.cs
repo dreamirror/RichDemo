@@ -11,6 +11,8 @@ public class DataConfigMgr : ModuleRules
 		PublicIncludePaths.AddRange(
 			new string[] {
 				// ... add public include paths required here ...
+				"Runtime/CoreUObject/Public/UObject",
+				"Runtime/Core/Public/Logging",
 			}
 			);
 				

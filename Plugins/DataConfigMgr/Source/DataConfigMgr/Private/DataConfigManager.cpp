@@ -1,7 +1,7 @@
 ﻿#include "DataConfigManager.h"
 #include "AssetRegistryModule.h"
-#include "ModuleManager.h"
 #include "LogMacros.h"
+#include "Modules/ModuleManager.h"
 
 UDataConfigManager::UDataConfigManager()
 {
