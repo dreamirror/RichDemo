@@ -8,6 +8,23 @@ public class RichDemo : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay" });
+		PublicDependencyModuleNames.AddRange(new string[] { 
+			"Core", 
+			"CoreUObject",
+			"Engine",
+			"InputCore",
+			"HeadMountedDisplay",
+			"MoviePlayer",
+			"UMG"
+		});
+
+
+		PrivateIncludePaths.AddRange(new string[] {
+            "RichDemo",
+			"RichDemo/UI",
+			"RichDemo/UI/Manager",
+			"RichDemo/Framework",
+			"RichDemo/Framework/Event",
+		});
 	}
 }

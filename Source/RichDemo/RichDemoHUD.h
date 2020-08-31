@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
 #include "RichDemoHUD.generated.h"
-
 UCLASS()
 class ARichDemoHUD : public AHUD
 {
