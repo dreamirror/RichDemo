@@ -1,7 +1,10 @@
 ﻿
 #include "CameraPawnBase.h"
+#include "RichCamera/RichCameraManager.h"
+
 #include "Kismet/GameplayStatics.h"
 #include "Camera/CameraComponent.h"
+
 
 // Sets default values
 ACameraPawnBase::ACameraPawnBase()
@@ -29,6 +32,16 @@ void ACameraPawnBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	bStartTick = false;
+
+	FRichCameraManager::Singleton().RegistRichCamera(this,CameraID,bMainCamera);
+	if (bMainCamera)
+	{
+		FViewTargetTransitionParams Param;
+		FRichCameraManager::Singleton().SetViewTarget(CameraID, Param);
+	}
+		
+	
 }
 
 // Called every frame
@@ -50,6 +63,7 @@ void ACameraPawnBase::BecomeViewTarget(class APlayerController* PC)
 {
 	Super::BecomeViewTarget(PC);
 	FollowCamera->SetComponentTickEnabled(true);
+	bStartTick = true;
 
 }
 
@@ -60,6 +74,7 @@ void ACameraPawnBase::EndViewTarget(class APlayerController* PC)
 
 	FollowCamera->SetComponentTickEnabled(false);
 
+	bStartTick = false;
 }
 
 

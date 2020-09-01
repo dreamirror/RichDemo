@@ -51,7 +51,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void SetViewRotation(const FRotator& Rot);
-	virtual void UpdatePawnLocation(float DeltaTime){};
 	virtual void UpdatePawnRotation(float DeltaTime);
 
 	/** Called when this actor becomes the given PlayerController's ViewTarget. Triggers the Blueprint event K2_OnBecomeViewTarget. */
@@ -60,15 +59,28 @@ public:
 	/** Called when this actor is no longer the given PlayerController's ViewTarget. Also triggers the Blueprint event K2_OnEndViewTarget. */
 	virtual void EndViewTarget(class APlayerController* PC) override;
 
+private:
+	void RegistToCameraManager();
+
 public:
 
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "相机参数", meta = (DisplayName = "相机FOV"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "相机参数", meta = (DisplayName = "相机FOV"))
 	FViewLimit CameraFovSetting;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "相机参数", meta = (DisplayName = "是否设置为主相机" , DisplayAfter = "Transform"))
+	bool bMainCamera = false;
+
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "相机参数", meta = (DisplayName = "相机ID", DisplayAfter = "Transform"))
+	FString CameraID;
+
+private:
+	bool bStartTick = false;
+	
+
 
 };

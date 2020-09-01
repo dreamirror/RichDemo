@@ -10,7 +10,7 @@ void FRichActorManager::Init()
 
 void FRichActorManager::Destory()
 {
-
+	RichActorList.Empty();
 }
 
 bool FRichActorManager::RegistRichActor(ARActorBase* InRActor)

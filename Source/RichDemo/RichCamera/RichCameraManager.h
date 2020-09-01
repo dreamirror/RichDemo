@@ -1,23 +1,25 @@
 #pragma once
 
 #include "Framework/Singleton.h"
-#include "RichDemo/RichActor/RActorDefine.h"
+#include "Camera/PlayerCameraManager.h"
 
 class URGameInstance;
-class ARActorBase;
+class ACameraPawnBase;
 
 /*
-* 场景Actor管理系统
+* 场景camera管理系统, 以当前场景中的CameraID作为key，每个CameraID不可重复
 */
 class FRichCameraManager
 {
 	DECLARE_SINGLETON(FRichCameraManager);
 
 public:
-	bool RegistRichActor(ARActorBase* InRActor);
+	void InitData(URGameInstance* InGameInstance);
 
-	TArray<ARActorBase*> GetAllRichActor(ERActorType InType);
-	void SetRichActorActive(ERActorType InType , bool bActive);
+	bool RegistRichCamera(ACameraPawnBase* InRCamera , FString CameraID, bool bMainCamera = false);
+
+	ACameraPawnBase* GetRichCamera(FString CameraID);
+	void SetViewTarget(FString InCameraID , FViewTargetTransitionParams TransitionParams);
 
 private:
 	void Init();
@@ -25,5 +27,7 @@ private:
 	void Destory();
 
 private:
-	TMap< ERActorType, TArray<ARActorBase*>> RichActorList;
+	URGameInstance* RGameInstance;
+	TMap< FString, ACameraPawnBase*> CameraPawnList;
+	ACameraPawnBase* MainCameraPawn;
 };

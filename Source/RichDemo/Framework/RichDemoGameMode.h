@@ -6,13 +6,13 @@
 #include "GameFramework/GameModeBase.h"
 #include "RichDemoGameMode.generated.h"
 
-UCLASS(minimalapi)
+UCLASS()
 class ARichDemoGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
-public:
-	ARichDemoGameMode();
+//public:
+//	ARichDemoGameMode();
 };
 
 

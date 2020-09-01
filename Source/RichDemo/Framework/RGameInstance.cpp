@@ -7,6 +7,7 @@
 #include "RUIManager.h"
 #include "RMaskManager.h"
 #include "RichActorManager/RichActorManager.h"
+#include "RichCamera/RichCameraManager.h"
 #include "Blueprint/UserWidget.h"
 
 
@@ -35,6 +36,8 @@ void URGameInstance::Init()
 	URMaskManager::Get()->InitMask(GetWorld());
 
 	FRichActorManager::CreateSingleton();
+	FRichCameraManager::CreateSingleton();
+	FRichCameraManager::Singleton().InitData(this);
 
 }
 
@@ -47,6 +50,7 @@ void URGameInstance::Shutdown()
 	MaskManager->Shutdown();
 
 	FRichActorManager::DestroySingleton();
+	FRichCameraManager::DestroySingleton();
 
 	Instance = nullptr;
 }

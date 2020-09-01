@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "RichActor/RActorBase.h"
 #include "RichActor/RActorDefine.h"
+#include "Camera/PlayerCameraManager.h"
 #include "RCutToCameraActor.generated.h"
 
 /*
@@ -37,6 +38,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Acotr相关属性", meta = (DisplayName = "要切换的相机"))
 	ACameraPawnBase* CameraToCutTo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Acotr相关属性", meta = (DisplayName = "相机切换参数"))
+	FViewTargetTransitionParams CameraTranParam;
+
 
 	
 };

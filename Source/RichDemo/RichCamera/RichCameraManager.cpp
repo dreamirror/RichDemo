@@ -1,54 +1,64 @@
 #include "RichCameraManager.h"
 #include "RichActor/RActorBase.h"
+#include "CameraPawnBase.h"
+#include "Framework/RGameInstance.h"
+
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/PlayerController.h"
 
 DEFINE_SINGLETON(FRichCameraManager, Init(), Destory());
 
 void FRichCameraManager::Init()
 {
+}
 
+void FRichCameraManager::InitData(URGameInstance* InGameInstance)
+{
+	RGameInstance = InGameInstance;
 }
 
 void FRichCameraManager::Destory()
 {
-
+	CameraPawnList.Empty();
+	RGameInstance = nullptr;
+	MainCameraPawn = nullptr;
 }
 
-bool FRichCameraManager::RegistRichActor(ARActorBase* InRActor)
+bool FRichCameraManager::RegistRichCamera(ACameraPawnBase* InRCamera, FString CameraID, bool bMainCamera)
 {
-	ERActorType ActorType = InRActor->GetActorType();
-	if (TArray<ARActorBase*>* TempActorList = RichActorList.Find(ActorType))
+	if (auto Item = CameraPawnList.Find(CameraID))
 	{
-		TempActorList->Add(InRActor);
+		if (ACameraPawnBase* CameraPawn = Cast<ACameraPawnBase>(*Item))//CameraPawnList.Find(CameraID))
+			return false;
 	}
 	else //如果当前没有此分类，添加一个
-	{
-		TArray<ARActorBase*> NewActorArray;
-		NewActorArray.Add(InRActor);
-		RichActorList.Add(ActorType, NewActorArray);
+		CameraPawnList.Add(CameraID, InRCamera);
+
+	if (bMainCamera) {
+		MainCameraPawn = InRCamera;
 	}
 	return true;
 }
 
-TArray<ARActorBase*> FRichCameraManager::GetAllRichActor(ERActorType InType)
+ACameraPawnBase* FRichCameraManager::GetRichCamera(FString CameraID)
 {
-	if (TArray<ARActorBase*>* TempActorList = RichActorList.Find(InType))
-		return *TempActorList;
+	if (auto Item = CameraPawnList.Find(CameraID))
+	{
+		if (ACameraPawnBase* CameraPawn = Cast<ACameraPawnBase>(*Item))
+			return CameraPawn;
+	}
 	
-	TArray<ARActorBase*> Temp;
-	return Temp;
+	
+	return nullptr;
 }
 
-void FRichCameraManager::SetRichActorActive(ERActorType InType, bool bActive)
+void FRichCameraManager::SetViewTarget(FString InCameraID, FViewTargetTransitionParams TransitionParams)
 {
-	if (TArray<ARActorBase*>* TempActorList = RichActorList.Find(InType))
-	{
-		for (int index = 0; index < TempActorList->Num(); index++)
+	if (APlayerController* PlayerController = Cast<APlayerController>(UGameplayStatics::GetPlayerController(RGameInstance,0))) {
+		if (auto Item = CameraPawnList.Find(InCameraID))
 		{
-			if(bActive)
-				(*TempActorList)[index]->OnActive();
-			else
-				(*TempActorList)[index]->OnDisActive();
+			if (ACameraPawnBase* CameraPawn = Cast<ACameraPawnBase>(*Item))//CameraPawnList.Find(InCameraID))
+				PlayerController->SetViewTarget(CameraPawn, TransitionParams);
 		}
 	}
-		
 }
